@@ -1,9 +1,8 @@
 {
 	"name": "icybee/module-taxonomy-terms",
-	"type": "library",
+	"type": "icanboogie-module",
 	"description": "Taxonomy terms",
 	"keywords": [ "taxonomy", "terms" ],
-	"homepage": "http://icybee.org/",
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
@@ -20,7 +19,7 @@
 	"minimum-stability": "dev",
 	"require": {
 		"php": ">=5.4.0",
-		"icybee/module-taxonomy-vocabulary": "*"
+		"icybee/module-taxonomy-vocabulary": "2.x"
 	},
 	"autoload": {
 		"classmap": [ "lib/" ]
