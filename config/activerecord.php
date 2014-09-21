@@ -10,7 +10,8 @@ return [
 
 			'vocabulary' => 'Icybee\Modules\Taxonomy\Vocabulary\VocabularyCriterion',
 			'scope' => 'Icybee\Modules\Taxonomy\Vocabulary\ScopeCriterion',
-			'term' => __NAMESPACE__ . '\TermCriterion'
+			'term' => __NAMESPACE__ . '\TermCriterion',
+			'usage' => __NAMESPACE__ . '\UsageCriterion'
 
 		]
 
