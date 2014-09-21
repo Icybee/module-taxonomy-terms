@@ -11,12 +11,14 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
+use ICanBoogie\Routing\ToSlug;
+
 /**
  * A term of a vocabulary.
  *
  * @property-read array $nodes_keys
  */
-class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Brickrouge\CSSClassNames
+class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Brickrouge\CSSClassNames, ToSlug
 {
 	use \Brickrouge\CSSClassNamesProperty;
 
@@ -87,6 +89,11 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 	public function getIterator()
 	{
 		return new \ArrayIterator($this->nodes);
+	}
+
+	public function to_slug()
+	{
+		return $this->termslug;
 	}
 
 	/**
@@ -163,7 +170,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 		->filter_by_vtid($this->vtid)
 		->where('is_online = 1')
 		->order('ttnode.weight')
-		->all(PDO::FETCH_COLUMN);
+		->all(\PDO::FETCH_COLUMN);
 
 		if (!$ids)
 		{
@@ -171,7 +178,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 		}
 
 		$constructors = $core->models['nodes']->select('constructor, nid')->where(array('nid' => $ids))
-		->all(PDO::FETCH_GROUP | PDO::FETCH_COLUMN);
+		->all(\PDO::FETCH_GROUP | \PDO::FETCH_COLUMN);
 
 		$rc = array_flip($ids);
 
