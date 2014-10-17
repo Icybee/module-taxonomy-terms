@@ -3,14 +3,14 @@
 namespace Icybee\Modules\Taxonomy\Terms;
 
 use ICanBoogie\ActiveRecord\Model;
-use ICanBoogie\Module;
+use ICanBoogie\Module\Descriptor;
 
 return array
 (
-	Module::T_CATEGORY => 'organize',
-	Module::T_DESCRIPTION => 'Manage vocabulary terms',
+	Descriptor::CATEGORY => 'organize',
+	Descriptor::DESCRIPTION => 'Manage vocabulary terms',
 
-	Module::T_MODELS => array
+	Descriptor::MODELS => array
 	(
 		'primary' => array
 		(
@@ -54,12 +54,12 @@ return array
 		)
 	),
 
-	Module::T_NAMESPACE => __NAMESPACE__,
-	Module::T_REQUIRES => array
+	Descriptor::NS => __NAMESPACE__,
+	Descriptor::REQUIRES => array
 	(
 		'nodes' => '1.0',
 		'taxonomy.vocabulary' => '1.0'
 	),
 
-	Module::T_TITLE => 'Terms'
+	Descriptor::TITLE => 'Terms'
 );
