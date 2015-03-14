@@ -11,7 +11,7 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
-use ICanBoogie\ActiveRecord\Criterion;
+use ICanBoogie\Facets\Criterion;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\generate_token;

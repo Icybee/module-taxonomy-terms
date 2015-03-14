@@ -103,9 +103,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 	 */
 	protected function lazy_get_vocabulary()
 	{
-		global $core;
-
-		return $this->vid ? $core->models['taxonomy.vocabulary'][$this->vid] : null;
+		return $this->vid ? \ICanBoogie\app()->models['taxonomy.vocabulary'][$this->vid] : null;
 	}
 
 	static private $nodes_keys_by_vid_and_vtid = array();
@@ -120,13 +118,11 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 	 */
 	protected function lazy_get_nodes_keys()
 	{
-		global $core;
-
 		$vid = $this->vid;
 
 		if (!isset(self::$nodes_keys_by_vid_and_vtid[$vid]))
 		{
-			$groups = $core->models['taxonomy.terms/nodes']
+			$groups = \ICanBoogie\app()->models['taxonomy.terms/nodes']
 			->select('vtid, nid')
 			->filter_by_vid($this->vid)
 			->order('term_node.weight')
@@ -161,12 +157,10 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 	 */
 	protected function lazy_get_nodes()
 	{
-		global $core;
-
 		$ids = $this->model
 		->select('nid')
-		->joins('INNER JOIN {prefix}taxonomy_terms__nodes ttnode USING(vtid)') // FIXME-20110614 Query should be cleverer then that
-		->joins(':nodes')
+		->join('INNER JOIN {prefix}taxonomy_terms__nodes ttnode USING(vtid)') // FIXME-20110614 Query should be cleverer then that
+		->join(':nodes')
 		->filter_by_vtid($this->vtid)
 		->where('is_online = 1')
 		->order('ttnode.weight')
@@ -177,14 +171,14 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 			return array();
 		}
 
-		$constructors = $core->models['nodes']->select('constructor, nid')->where(array('nid' => $ids))
+		$constructors = $this->app->models['nodes']->select('constructor, nid')->where(array('nid' => $ids))
 		->all(\PDO::FETCH_GROUP | \PDO::FETCH_COLUMN);
 
 		$rc = array_flip($ids);
 
 		foreach ($constructors as $constructor => $constructor_ids)
 		{
-			$records = $core->models[$constructor]->find($constructor_ids);
+			$records = $this->app->models[$constructor]->find($constructor_ids);
 
 			foreach ($records as $id => $record)
 			{

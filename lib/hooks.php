@@ -19,15 +19,11 @@ class Hooks
 {
 	static public function on_nodes_delete(Event $event)
 	{
-		global $core;
-
-		$core->models['taxonomy.terms/nodes']->filter_by_nid($event->rc)->delete();
+		\ICanBoogie\app()->models['taxonomy.terms/nodes']->filter_by_nid($event->rc)->delete();
 	}
 
 	static public function markup_terms(array $args, \Patron\Engine $patron, $template)
 	{
-		global $core;
-
 		if (isset($args['scope']))
 		{
 			throw new Exception('The "scope" parameter is deprecated, use "construtor" instead.');
@@ -74,7 +70,7 @@ class Hooks
 
 		$where = $conditions ? ' WHERE ' . implode(' AND ', $conditions) : null;
 
-		$model = $core->models['taxonomy.terms'];
+		$model = \ICanBoogie\app()->models['taxonomy.terms'];
 
 		$entries = $model->query
 		(
@@ -123,7 +119,7 @@ class Hooks
 	*/
 	static public function markup_nodes(array $args, \Patron\Engine $patron, $template)
 	{
-		global $core;
+		$app = \ICanBoogie\app();
 
 		$term = $patron->context['this'];
 		$order = $args['order'];
@@ -133,7 +129,7 @@ class Hooks
 			$constructor = $term->nodes_constructor;
 			$order = $args['order'] ? strtr($args['order'], ':', ' ') : 'FIELD (nid, ' . $term->nodes_ids . ')';
 
-			$entries = $core->models[$constructor]->where('is_online = 1 AND nid IN(' . $term->nodes_ids . ')')->order($order)->all;
+			$entries = $app->models[$constructor]->where('is_online = 1 AND nid IN(' . $term->nodes_ids . ')')->order($order)->all;
 
 			$taxonomy_property = $term->vocabularyslug;
 			$taxonomy_property_slug = $taxonomy_property . 'slug';
@@ -150,15 +146,15 @@ class Hooks
 			$vocabulary = $args['vocabulary'];
 			$constructor = $args['constructor'];
 
-			$vocabulary = $core->models['taxonomy.vocabulary']
-			->joins('INNER JOIN {self}__scopes USING(vid)')
-			->joins('INNER JOIN {prefix}taxonomy_terms USING(vid)')
+			$vocabulary = $app->models['taxonomy.vocabulary']
+			->join('INNER JOIN {self}__scopes USING(vid)')
+			->join('INNER JOIN {prefix}taxonomy_terms USING(vid)')
 			->where('vocabularyslug = ? AND constructor = ? AND termslug = ?', $vocabulary, $constructor, $term)
 			->one;
 
 			$patron->context['self']['vocabulary'] = $vocabulary;
 
-			$ids = $core->db->query
+			$ids = $app->db->query
 			(
 				'SELECT nid FROM {prefix}taxonomy_vocabulary voc
 				INNER JOIN {prefix}taxonomy_vocabulary__scopes scopes USING(vid)
@@ -179,7 +175,7 @@ class Hooks
 			$limit = $args['limit'];
 			$offset = (isset($args['page']) ? $args['page'] : 0) * $limit;
 
-			$arr = $core->models[$constructor]
+			$arr = $app->models[$constructor]
 			->where(array('is_online' => true, 'nid' => $ids))
 			->order($order);
 

@@ -21,9 +21,7 @@ class EditBlock extends \Icybee\EditBlock
 {
 	protected function lazy_get_children()
 	{
-		global $core;
-
-		$vid_options = array(null => '') + $core->models['taxonomy.vocabulary']->select('vid, vocabulary')->pairs;
+		$vid_options = array(null => '') + $this->app->models['taxonomy.vocabulary']->select('vid, vocabulary')->pairs;
 
 		/*
 		 * Beware of the 'weight' property, because vocabulary also define 'weight' and will

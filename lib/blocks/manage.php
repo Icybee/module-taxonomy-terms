@@ -76,8 +76,6 @@ class VidColumn extends Column
 {
 	public function __construct(\Icybee\Modules\Taxonomy\Terms\ManageBlock $manager, $id, array $options=array())
 	{
-		global $core;
-
 		parent::__construct
 		(
 			$manager, $id, $options + array
@@ -90,14 +88,9 @@ class VidColumn extends Column
 
 	/**
 	 * Extends the "vid" column by providing vocabulary filters.
-	 *
-	 * @param array $column
-	 * @param string $id
 	 */
 	protected function get_options()
 	{
-		global $core;
-
 		// Move this to render_header() when it's actually used
 
 		$keys = $this->manager->module->model->select('DISTINCT vid')->all(\PDO::FETCH_COLUMN);
@@ -111,7 +104,7 @@ class VidColumn extends Column
 
 		// /
 
-		return $core->models['taxonomy.vocabulary']
+		return $this->app->models['taxonomy.vocabulary']
 		->select('CONCAT("?vid=", vid), vocabulary')
 		->where(array('vid' => $keys))
 		->order('vocabulary')
@@ -136,9 +129,7 @@ class VidColumn extends Column
 	 */
 	public function alter_query_with_order(Query $query, $order_direction)
 	{
-		global $core;
-
-		$names = $core->models['taxonomy.vocabulary']->select('vid, vocabulary')->order("vocabulary " . ($order_direction < 0 ? 'DESC' : 'ASC'))->pairs;
+		$names = $this->app->models['taxonomy.vocabulary']->select('vid, vocabulary')->order("vocabulary " . ($order_direction < 0 ? 'DESC' : 'ASC'))->pairs;
 
 		return $query->order('vid', array_keys($names));
 	}
