@@ -11,6 +11,9 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
+/**
+ * @property Term $record
+ */
 class DeleteBlock extends \Icybee\DeleteBlock
 {
 	protected function get_record_name()

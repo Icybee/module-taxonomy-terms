@@ -31,8 +31,8 @@ class Hooks
 			$args['constructor'] = $args['scope'];
 		}
 
-		$conditions = array();
-		$conditions_args = array();
+		$conditions = [];
+		$conditions_args = [];
 
 		$inner = ' INNER JOIN {prefix}taxonomy_terms term USING(vid)';
 
@@ -85,7 +85,7 @@ class Hooks
 
 			$conditions_args
 		)
-		->fetchAll(\PDO::FETCH_CLASS, 'Icybee\Modules\Taxonomy\Terms\Term', array($model));
+		->fetchAll(\PDO::FETCH_CLASS, Term::class, [ $model ]);
 
 		if ($constructor)
 		{
@@ -124,7 +124,7 @@ class Hooks
 		$term = $patron->context['this'];
 		$order = $args['order'];
 
-		if ($term instanceof \Icybee\Modules\Taxonomy\Terms\Term)
+		if ($term instanceof Term)
 		{
 			$constructor = $term->nodes_constructor;
 			$order = $args['order'] ? strtr($args['order'], ':', ' ') : 'FIELD (nid, ' . $term->nodes_ids . ')';
@@ -160,16 +160,17 @@ class Hooks
 				INNER JOIN {prefix}taxonomy_vocabulary__scopes scopes USING(vid)
 				INNER JOIN {prefix}taxonomy_terms term USING(vid)
 				INNER JOIN {prefix}taxonomy_terms__nodes tnode USING(vtid)
-				WHERE constructor = ? AND term.termslug = ?', array
-				(
+				WHERE constructor = ? AND term.termslug = ?', [
+
 					$constructor, $term
-				)
+
+				]
 			)
 			->fetchAll(\PDO::FETCH_COLUMN);
 
 			if (!$ids)
 			{
-				return;
+				return null;
 			}
 
 			$limit = $args['limit'];
@@ -182,12 +183,13 @@ class Hooks
 			$count = $arr->count;
 			$entries = $arr->limit($offset, $limit)->all;
 
-			$patron->context['self']['range'] = array
-			(
+			$patron->context['self']['range'] = [
+
 				'count' => $count,
 				'limit' => $limit,
 				'page' => isset($args['page']) ? $args['page'] : 0
-			);
+
+			];
 		}
 
 		return $patron($template, $entries);

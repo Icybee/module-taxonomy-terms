@@ -1,9 +1,10 @@
 <?php
 
-return array
-(
+return [
+
 	'Vocabulary' => 'Vocabulaire',
 	'Popularity' => 'Popularité',
 	'Term' => 'Terme',
 	'Terms' => 'Termes'
-);
+
+];

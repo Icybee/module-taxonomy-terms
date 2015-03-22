@@ -1,27 +1,33 @@
 <?php
 
-return array
-(
-	'events' => array
-	(
-		'Icybee\Modules\Nodes\DeleteOperation::process' => 'Icybee\Modules\Taxonomy\Terms\Hooks::on_nodes_delete'
-	),
+namespace Icybee\Modules\Taxonomy\Terms;
 
-	'patron.markups' => array
-	(
-		'taxonomy:terms' => array
-		(
-			'Icybee\Modules\Taxonomy\Terms\Hooks::markup_terms', array
-			(
+$hooks = Hooks::class . '::';
+
+return [
+
+	'events' => [
+
+		'Icybee\Modules\Nodes\DeleteOperation::process' => $hooks . 'on_nodes_delete'
+
+	],
+
+	'patron.markups' => [
+
+		'taxonomy:terms' => [
+
+			$hooks . 'markup_terms', [
+
 				'vocabulary' => null,
 				'constructor' => null
-			)
-		),
 
-		'taxonomy:nodes' => array
-		(
-			'Icybee\Modules\Taxonomy\Terms\Hooks::markup_nodes', array
-			(
+			]
+		],
+
+		'taxonomy:nodes' => [
+
+			$hooks . 'markup_nodes', [
+
 				'vocabulary' => null,
 				'scope' => null,
 				'term' => null,
@@ -29,7 +35,8 @@ return array
 				'by' => 'title',
 				'order' => 'asc',
 				'limit' => null
-			)
-		)
-	)
-);
+
+			]
+		]
+	]
+];

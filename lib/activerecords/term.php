@@ -168,10 +168,10 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 
 		if (!$ids)
 		{
-			return array();
+			return [];
 		}
 
-		$constructors = $this->app->models['nodes']->select('constructor, nid')->where(array('nid' => $ids))
+		$constructors = $this->app->models['nodes']->select('constructor, nid')->where([ 'nid' => $ids ])
 		->all(\PDO::FETCH_GROUP | \PDO::FETCH_COLUMN);
 
 		$rc = array_flip($ids);
@@ -207,13 +207,14 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 			$vocabulary_slug = $this->vocabulary->vocabularyslug;
 		}
 
-		return array
-		(
+		return [
+
 			'type' => 'term',
 			'id' => 'term-' . $this->vtid,
 			'slug' => 'term-slug--' . $this->termslug,
 			'vid' => $this->vid ? 'vocabulary-' . $this->vid : null,
 			'vslug' => $vocabulary_slug ? "vocabulary-slug--{$vocabulary_slug}" : null
-		);
+
+		];
 	}
 }

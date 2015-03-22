@@ -28,9 +28,9 @@ class NodeTermCriterion extends Criterion
 		{
 			$token = \ICanBoogie\generate_token(6, $possible);
 
-			if (empty($tokens[$token]))
+			if (empty(self::$tokens[$token]))
 			{
-				return $tokens[$token] = $token;
+				return self::$tokens[$token] = $token;
 			}
 		}
 	}
@@ -41,7 +41,7 @@ class NodeTermCriterion extends Criterion
 		$v_alias = $token . '_v';
 		$t_alias = $token . '_t';
 
-		$q = ActiveRecord\get_model('taxonomy.vocabulary')
+		$q = $query->model->models['taxonomy.vocabulary']
 		->select("nid, vocabularyslug AS $v_alias, termslug AS $t_alias")
 		->join(':taxonomy.terms')
 		->join(':taxonomy.terms/nodes');

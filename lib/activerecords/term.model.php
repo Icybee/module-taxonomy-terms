@@ -16,8 +16,10 @@ class Model extends \ICanBoogie\ActiveRecord\Model
 	/**
 	 * If the `termslug` property is empty it is created from the `term` property, otherwise
 	 * the it is normalized.
+	 *
+	 * @inheritdoc
 	 */
-	public function save(array $properties, $key=null, array $options=array())
+	public function save(array $properties, $key = null, array $options = [])
 	{
 		if (isset($properties[Term::TERM]) && empty($properties[Term::TERMSLUG]))
 		{

@@ -5,61 +5,67 @@ namespace Icybee\Modules\Taxonomy\Terms;
 use ICanBoogie\ActiveRecord\Model;
 use ICanBoogie\Module\Descriptor;
 
-return array
-(
+return [
+
 	Descriptor::CATEGORY => 'organize',
 	Descriptor::DESCRIPTION => 'Manage vocabulary terms',
 
-	Descriptor::MODELS => array
-	(
-		'primary' => array
-		(
-			Model::IMPLEMENTING => array
-			(
-				array('model' => 'taxonomy.vocabulary/primary')
-			),
+	Descriptor::MODELS => [
 
-			Model::SCHEMA => array
-			(
-				'fields' => array
-				(
+		'primary' => [
+
+			Model::IMPLEMENTING => [
+
+				[ 'model' => 'taxonomy.vocabulary/primary' ]
+
+			],
+
+			Model::SCHEMA => [
+
+				'fields' => [
+
 					'vtid' => 'serial',
 					'vid' => 'foreign',
 					'term' => 'varchar',
 					'termslug' => 'varchar',
-					'weight' => array('integer', 'unsigned' => true)
-				)
-			)
-		),
+					'weight' => [ 'integer', 'unsigned' => true ]
 
-		'nodes' => array
-		(
+				]
+			]
+		],
+
+		'nodes' => [
+
 			Model::ALIAS => 'term_node',
 			Model::ACTIVERECORD_CLASS => 'ICanBoogie\ActiveRecord',
 			Model::CLASSNAME => 'ICanBoogie\ActiveRecord\Model',
-			Model::IMPLEMENTING => array
-			(
-				array('model' => 'taxonomy.terms/primary')
-			),
+			Model::IMPLEMENTING => [
 
-			Model::SCHEMA => array
-			(
-				'fields' => array
-				(
-					'vtid' => array('foreign', 'primary' => true),
-					'nid' => array('foreign', 'primary' => true),
-					'weight' => array('integer', 'unsigned' => true)
-				)
-			)
-		)
-	),
+				[ 'model' => 'taxonomy.terms/primary' ]
+
+			],
+
+			Model::SCHEMA => [
+
+				'fields' => [
+
+					'vtid' => [ 'foreign', 'primary' => true ],
+					'nid' => [ 'foreign', 'primary' => true ],
+					'weight' => [ 'integer', 'unsigned' => true ]
+
+				]
+			]
+		]
+	],
 
 	Descriptor::NS => __NAMESPACE__,
-	Descriptor::REQUIRES => array
-	(
+	Descriptor::REQUIRES => [
+
 		'nodes' => '1.0',
 		'taxonomy.vocabulary' => '1.0'
-	),
+
+	],
 
 	Descriptor::TITLE => 'Terms'
-);
+
+];

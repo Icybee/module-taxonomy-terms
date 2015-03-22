@@ -17,40 +17,36 @@ use Brickrouge\Widget;
 
 use Icybee\Modules\Nodes\TitleSlugCombo;
 
+/**
+ * @property Term $record
+ */
 class EditBlock extends \Icybee\EditBlock
 {
 	protected function lazy_get_children()
 	{
-		$vid_options = array(null => '') + $this->app->models['taxonomy.vocabulary']->select('vid, vocabulary')->pairs;
+		$vid_options = [ null => '' ] + $this->app->models['taxonomy.vocabulary']->select('vid, vocabulary')->pairs;
 
 		/*
 		 * Beware of the 'weight' property, because vocabulary also define 'weight' and will
 		 * override the term's one.
 		 */
 
-		return array_merge
-		(
-			parent::lazy_get_children(), array
-			(
-				Term::TERM => new TitleSlugCombo
-				(
-					array
-					(
-						Form::LABEL => 'Term',
-						Element::REQUIRED => true
-					)
-				),
+		return array_merge(parent::lazy_get_children(), [
 
-				Term::VID => new Element
-				(
-					'select', array
-					(
-						Form::LABEL => 'Vocabulary',
-						Element::OPTIONS => $vid_options,
-						Element::REQUIRED => true
-					)
-				)
-			)
-		);
+			Term::TERM => new TitleSlugCombo([
+
+				Form::LABEL => 'Term',
+				Element::REQUIRED => true
+
+			]),
+
+			Term::VID => new Element('select', [
+
+				Form::LABEL => 'Vocabulary',
+				Element::OPTIONS => $vid_options,
+				Element::REQUIRED => true
+
+			])
+		]);
 	}
 }

@@ -11,34 +11,39 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
+use Icybee\Modules\Taxonomy\Terms\ManageBlock\PopularityColumn;
+use Icybee\Modules\Taxonomy\Terms\ManageBlock\TermColumn;
+use Icybee\Modules\Taxonomy\Terms\ManageBlock\VidColumn;
+
 class ManageBlock extends \Icybee\ManageBlock
 {
-	public function __construct(Module $module, array $attributes=array())
+	public function __construct(Module $module, array $attributes = [])
 	{
-		parent::__construct
-		(
-			$module, $attributes += array
-			(
-				self::T_ORDER_BY => array('term', 'asc')
-			)
-		);
+		parent::__construct($module, $attributes + [
+
+			self::T_ORDER_BY => [ 'term', 'asc' ]
+
+		]);
 	}
 
 	/**
 	 * Adds the following columns:
 	 *
-	 * - `term`: An instance of {@link ManageBlock\TermColumn}.
-	 * - `vid`: An instance of {@link ManageBlock\VidColumn}.
-	 * - `popularity`: An instance of {@link ManageBlock\PopularityColumn}.
+	 * - `term`: An instance of {@link TermColumn}.
+	 * - `vid`: An instance of {@link VidColumn}.
+	 * - `popularity`: An instance of {@link PopularityColumn}.
+	 *
+	 * @inheritdoc
 	 */
 	protected function get_available_columns()
 	{
-		return array_merge(parent::get_available_columns(), array
-		(
-			'term' => __CLASS__ . '\TermColumn',
-			'vid' => __CLASS__ . '\VidColumn',
-			'popularity' => __CLASS__ . '\PopularityColumn'
-		));
+		return array_merge(parent::get_available_columns(), [
+
+			'term' => TermColumn::class,
+			'vid' => VidColumn::class,
+			'popularity' => PopularityColumn::class
+
+		]);
 	}
 }
 
@@ -49,20 +54,24 @@ use ICanBoogie\ActiveRecord\Query;
 use Icybee\ManageBlock\Column;
 use Icybee\ManageBlock\FilterDecorator;
 use Icybee\ManageBlock\EditDecorator;
+use Icybee\Modules\Taxonomy\Terms\Term;
 
 class TermColumn extends Column
 {
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options = [])
 	{
-		parent::__construct
-		(
-			$manager, $id, $options + array
-			(
-				'title' => 'Term'
-			)
-		);
+		parent::__construct($manager, $id, $options + [
+
+			'title' => 'Term'
+
+		]);
 	}
 
+	/**
+	 * @param Term $record
+	 *
+	 * @inheritdoc
+	 */
 	public function render_cell($record)
 	{
 		return new EditDecorator($record->term, $record);
@@ -74,16 +83,14 @@ class TermColumn extends Column
  */
 class VidColumn extends Column
 {
-	public function __construct(\Icybee\Modules\Taxonomy\Terms\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\Modules\Taxonomy\Terms\ManageBlock $manager, $id, array $options = [])
 	{
-		parent::__construct
-		(
-			$manager, $id, $options + array
-			(
-				'title' => 'Vocabulary',
-				'orderable' => true
-			)
-		);
+		parent::__construct($manager, $id, $options + [
+
+			'title' => 'Vocabulary',
+			'orderable' => true
+
+		]);
 	}
 
 	/**
@@ -99,20 +106,22 @@ class VidColumn extends Column
 		{
 			$this->orderable = false;
 
-			return;
+			return null;
 		}
 
 		// /
 
 		return $this->app->models['taxonomy.vocabulary']
 		->select('CONCAT("?vid=", vid), vocabulary')
-		->where(array('vid' => $keys))
+		->where([ 'vid' => $keys ])
 		->order('vocabulary')
 		->pairs;
 	}
 
 	/**
 	 * Alters the query with the 'vid' filter.
+	 *
+	 * @inheritdoc
 	 */
 	public function alter_query_with_filter(Query $query, $filter_value)
 	{
@@ -126,6 +135,8 @@ class VidColumn extends Column
 
 	/**
 	 * Orders the records according to vocabulary name.
+	 *
+	 * @inheritdoc
 	 */
 	public function alter_query_with_order(Query $query, $order_direction)
 	{
@@ -134,6 +145,11 @@ class VidColumn extends Column
 		return $query->order('vid', array_keys($names));
 	}
 
+	/**
+	 * @param Term $record
+	 *
+	 * @inheritdoc
+	 */
 	public function render_cell($record)
 	{
 		return new FilterDecorator($record, $this->id, $this->manager->is_filtering($this->id), $record->vocabulary);
@@ -154,27 +170,27 @@ class PopularityColumn extends Column
 	 */
 	private $values;
 
-	public function __construct(\Icybee\ManageBlock $manager, $id, array $options=array())
+	public function __construct(\Icybee\ManageBlock $manager, $id, array $options = [])
 	{
-		parent::__construct
-		(
-			$manager, $id, array
-			(
-				'title' => 'Popularity',
-				'class' => 'pull-right',
-				'orderable' => true
-			)
-		);
+		parent::__construct($manager, $id, [
+
+			'title' => 'Popularity',
+			'class' => 'pull-right',
+			'orderable' => true
+
+		]);
 	}
 
 	/**
 	 * Computes the popularity of the specified records.
 	 *
 	 * Note: The popularity values are stored in the {@link $values} property.
+	 *
+	 * @inheritdoc
 	 */
 	public function alter_records(array $records)
 	{
-		$keys = array();
+		$keys = [];
 
 		foreach ($records as $record)
 		{
@@ -191,12 +207,19 @@ class PopularityColumn extends Column
 
 	/**
 	 * Orders the records according to their popularity.
+	 *
+	 * @inheritdoc
 	 */
 	public function alter_query_with_order(Query $query, $order_direction)
 	{
 		return $query->order("(SELECT COUNT(vtid) FROM {self}__nodes WHERE vtid = term.vtid) " . ($order_direction < 0 ? 'DESC' : 'ASC'));
 	}
 
+	/**
+	 * @param Term $record
+	 *
+	 * @inheritdoc
+	 */
 	public function render_cell($record)
 	{
 		return isset($this->values[$record->vtid]) ? $this->values[$record->vtid] : 0;

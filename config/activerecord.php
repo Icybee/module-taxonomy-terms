@@ -2,16 +2,18 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
+use Icybee\Modules\Taxonomy\Vocabulary;
+
 return [
 
 	'facets' => [
 
 		'taxonomy.terms' => [
 
-			'vocabulary' => 'Icybee\Modules\Taxonomy\Vocabulary\VocabularyCriterion',
-			'scope' => 'Icybee\Modules\Taxonomy\Vocabulary\ScopeCriterion',
-			'term' => __NAMESPACE__ . '\TermCriterion',
-			'usage' => __NAMESPACE__ . '\UsageCriterion'
+			'vocabulary' => Vocabulary\VocabularyCriterion::class,
+			'scope' => Vocabulary\ScopeCriterion::class,
+			'term' => TermCriterion::class,
+			'usage' => UsageCriterion::class
 
 		]
 
