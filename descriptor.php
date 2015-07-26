@@ -22,15 +22,12 @@ return [
 
 			Model::SCHEMA => [
 
-				'fields' => [
+				'vtid' => 'serial',
+				'vid' => 'foreign',
+				'term' => 'varchar',
+				'termslug' => 'varchar',
+				'weight' => [ 'integer', 'unsigned' => true ]
 
-					'vtid' => 'serial',
-					'vid' => 'foreign',
-					'term' => 'varchar',
-					'termslug' => 'varchar',
-					'weight' => [ 'integer', 'unsigned' => true ]
-
-				]
 			]
 		],
 
@@ -47,25 +44,16 @@ return [
 
 			Model::SCHEMA => [
 
-				'fields' => [
+				'vtid' => [ 'foreign', 'primary' => true ],
+				'nid' => [ 'foreign', 'primary' => true ],
+				'weight' => [ 'integer', 'unsigned' => true ]
 
-					'vtid' => [ 'foreign', 'primary' => true ],
-					'nid' => [ 'foreign', 'primary' => true ],
-					'weight' => [ 'integer', 'unsigned' => true ]
-
-				]
 			]
 		]
 	],
 
 	Descriptor::NS => __NAMESPACE__,
-	Descriptor::REQUIRES => [
-
-		'nodes' => '1.0',
-		'taxonomy.vocabulary' => '1.0'
-
-	],
-
-	Descriptor::TITLE => 'Terms'
+	Descriptor::REQUIRES => [ 'nodes', 'taxonomy.vocabulary' ],
+	Descriptor::TITLE => "Terms"
 
 ];
