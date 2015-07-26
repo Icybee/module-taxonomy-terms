@@ -1,16 +1,12 @@
 <?php
 
-return [
+namespace Icybee\Modules\Taxonomy\Terms;
 
-	'!admin:manage' => [
+use ICanBoogie\HTTP\Request;
+use Icybee\Routing\RouteMaker as Make;
 
-	],
+return Make::admin('taxonomy.terms', Routing\TermsAdminController::class, [
 
-	'!admin:new' => [
+	'only' => [ 'index', 'create', 'edit' ]
 
-	],
-
-	'!admin:edit' => [
-
-	]
-];
+]);
