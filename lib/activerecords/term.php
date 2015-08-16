@@ -11,16 +11,27 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
+use ICanBoogie\ActiveRecord;
 use ICanBoogie\Routing\ToSlug;
+
+use Brickrouge\CSSClassNames;
+use Brickrouge\CSSClassNamesProperty;
+
+use Icybee\Modules\Nodes\Node;
+use Icybee\Modules\Taxonomy\Vocabulary\Vocabulary;
 
 /**
  * A term of a vocabulary.
  *
- * @property-read array $nodes_keys
+ * @property Node[] $nodes
+ * @property array $nodes_keys
+ * @property Vocabulary $vocabulary
  */
-class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Brickrouge\CSSClassNames, ToSlug
+class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, ToSlug
 {
-	use \Brickrouge\CSSClassNamesProperty;
+	use CSSClassNamesProperty;
+
+	const MODEL_ID = 'taxonomy.terms';
 
 	const VTID = 'vtid';
 	const VID = 'vid';
@@ -64,16 +75,6 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 	public $weight;
 
 	/**
-	 * The `$model` property defaults to "taxonomy.terms".
-	 *
-	 * @param string $model
-	 */
-	public function __construct($model='taxonomy.terms')
-	{
-		parent::__construct($model);
-	}
-
-	/**
 	 * Returns the {@link $term} property.
 	 *
 	 * @return string
@@ -99,14 +100,16 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 	/**
 	 * Returns the vocabulary the term belongs to.
 	 *
-	 * @return \Icybee\Modules\Taxonomy\Vocabulary\Vocabulary
+	 * @return Vocabulary
 	 */
 	protected function lazy_get_vocabulary()
 	{
-		return $this->vid ? \ICanBoogie\app()->models['taxonomy.vocabulary'][$this->vid] : null;
+		return $this->vid
+			? $this->model->models['taxonomy.vocabulary'][$this->vid]
+			: null;
 	}
 
-	static private $nodes_keys_by_vid_and_vtid = array();
+	static private $nodes_keys_by_vid_and_vtid = [];
 
 	/**
 	 * Returns the nodes keys associated with the term.
@@ -122,7 +125,7 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 
 		if (!isset(self::$nodes_keys_by_vid_and_vtid[$vid]))
 		{
-			$groups = \ICanBoogie\app()->models['taxonomy.terms/nodes']
+			$groups = $this->model->models['taxonomy.terms/nodes']
 			->select('vtid, nid')
 			->filter_by_vid($this->vid)
 			->order('term_node.weight')
@@ -171,14 +174,18 @@ class Term extends \ICanBoogie\ActiveRecord implements \IteratorAggregate, \Bric
 			return [];
 		}
 
-		$constructors = $this->app->models['nodes']->select('constructor, nid')->where([ 'nid' => $ids ])
-		->all(\PDO::FETCH_GROUP | \PDO::FETCH_COLUMN);
+		$models = $this->model->models;
+
+		$constructors = $models['nodes']
+			->select('constructor, nid')
+			->where([ 'nid' => $ids ])
+			->all(\PDO::FETCH_GROUP | \PDO::FETCH_COLUMN);
 
 		$rc = array_flip($ids);
 
 		foreach ($constructors as $constructor => $constructor_ids)
 		{
-			$records = $this->app->models[$constructor]->find($constructor_ids);
+			$records = $models[$constructor]->find($constructor_ids);
 
 			foreach ($records as $id => $record)
 			{

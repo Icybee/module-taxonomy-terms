@@ -12,12 +12,20 @@
 namespace Icybee\Modules\Taxonomy\Terms;
 
 use ICanBoogie\ActiveRecord;
-use ICanBoogie\Event;
 use ICanBoogie\Exception;
+use ICanBoogie\Operation;
+
+use Icybee\Modules\Nodes\DeleteOperation;
 
 class Hooks
 {
-	static public function on_nodes_delete(Event $event)
+	/**
+	 * Deletes the terms associated with a node when the node is deleted.
+	 *
+	 * @param Operation\ProcessEvent $event
+	 * @param DeleteOperation $target
+	 */
+	static public function on_nodes_delete(Operation\ProcessEvent $event, DeleteOperation $target)
 	{
 		\ICanBoogie\app()->models['taxonomy.terms/nodes']->filter_by_nid($event->rc)->delete();
 	}
@@ -26,7 +34,7 @@ class Hooks
 	{
 		if (isset($args['scope']))
 		{
-			throw new Exception('The "scope" parameter is deprecated, use "construtor" instead.');
+			throw new \Exception('The "scope" parameter is deprecated, use "construtor" instead.');
 
 			$args['constructor'] = $args['scope'];
 		}
@@ -127,9 +135,9 @@ class Hooks
 		if ($term instanceof Term)
 		{
 			$constructor = $term->nodes_constructor;
-			$order = $args['order'] ? strtr($args['order'], ':', ' ') : 'FIELD (nid, ' . $term->nodes_ids . ')';
+			$order = $args['order'] ? strtr($args['order'], ':', ' ') : 'FIELD (nid, ' . $term->nodes_keys . ')';
 
-			$entries = $app->models[$constructor]->where('is_online = 1 AND nid IN(' . $term->nodes_ids . ')')->order($order)->all;
+			$entries = $app->models[$constructor]->where('is_online = 1 AND nid IN(' . $term->nodes_keys . ')')->order($order)->all;
 
 			$taxonomy_property = $term->vocabularyslug;
 			$taxonomy_property_slug = $taxonomy_property . 'slug';

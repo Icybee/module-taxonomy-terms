@@ -163,13 +163,6 @@ class VidColumn extends Column
  */
 class PopularityColumn extends Column
 {
-	/**
-	 * Popularity values for the displayed rows.
-	 *
-	 * @var array[int]int
-	 */
-	private $values;
-
 	public function __construct(\Icybee\ManageBlock $manager, $id, array $options = [])
 	{
 		parent::__construct($manager, $id, [
@@ -182,27 +175,20 @@ class PopularityColumn extends Column
 	}
 
 	/**
-	 * Computes the popularity of the specified records.
+	 * Alerts the query to make the `term_node_count` column.
 	 *
-	 * Note: The popularity values are stored in the {@link $values} property.
+	 * @param Query $query
 	 *
-	 * @inheritdoc
+	 * @return Query
 	 */
-	public function alter_records(array $records)
+	public function alter_query(Query $query)
 	{
-		$keys = [];
+		$term_node_count = $query
+			->model->models['taxonomy.terms/nodes']
+			->select('vtid, COUNT(nid) AS term_node_count')
+			->group('vtid');
 
-		foreach ($records as $record)
-		{
-			$keys[] = $record->vtid;
-		}
-
-		if ($keys)
-		{
-			$this->values = $this->manager->module->model('nodes')->filter_by_vtid($keys)->count('vtid');
-		}
-
-		return $records;
+		return $query->join($term_node_count, [ 'mode' => 'LEFT', 'on' => 'vtid' ]);
 	}
 
 	/**
@@ -212,7 +198,7 @@ class PopularityColumn extends Column
 	 */
 	public function alter_query_with_order(Query $query, $order_direction)
 	{
-		return $query->order("(SELECT COUNT(vtid) FROM {self}__nodes WHERE vtid = term.vtid) " . ($order_direction < 0 ? 'DESC' : 'ASC'));
+		return $query->order("term_node_count " . ($order_direction < 0 ? 'DESC' : 'ASC'));
 	}
 
 	/**
@@ -222,6 +208,6 @@ class PopularityColumn extends Column
 	 */
 	public function render_cell($record)
 	{
-		return isset($this->values[$record->vtid]) ? $this->values[$record->vtid] : 0;
+		return $record->term_node_count;
 	}
 }

@@ -7,6 +7,7 @@ use Icybee\Routing\RouteMaker as Make;
 
 return Make::admin('taxonomy.terms', Routing\TermsAdminController::class, [
 
-	'only' => [ 'index', 'create', 'edit' ]
+	'id_name' => 'vtid',
+	'only' => [ 'index', 'create', 'edit', 'delete', 'confirm-delete' ]
 
 ]);
