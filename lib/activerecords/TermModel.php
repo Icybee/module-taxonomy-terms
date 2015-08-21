@@ -11,7 +11,9 @@
 
 namespace Icybee\Modules\Taxonomy\Terms;
 
-class Model extends \ICanBoogie\ActiveRecord\Model
+use ICanBoogie\ActiveRecord\Model;
+
+class TermModel extends Model
 {
 	/**
 	 * If the `termslug` property is empty it is created from the `term` property, otherwise
