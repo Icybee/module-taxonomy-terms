@@ -15,12 +15,6 @@ $hooks = Hooks::class . '::';
 
 return [
 
-	'events' => [
-
-		'Icybee\Modules\Nodes\DeleteOperation::process' => $hooks . 'on_nodes_delete'
-
-	],
-
 	'patron.markups' => [
 
 		'taxonomy:terms' => [
