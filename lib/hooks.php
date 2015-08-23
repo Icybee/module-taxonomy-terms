@@ -78,6 +78,8 @@ class Hooks
 
 		$where = $conditions ? ' WHERE ' . implode(' AND ', $conditions) : null;
 
+		/* @var $model TermModel */
+
 		$model = \ICanBoogie\app()->models['taxonomy.terms'];
 
 		$entries = $model->query
