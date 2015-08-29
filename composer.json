@@ -19,7 +19,7 @@
 	"minimum-stability": "dev",
 	"require": {
 		"php": ">=5.5.0",
-		"icybee/module-taxonomy-vocabulary": "2.x"
+		"icybee/module-taxonomy-vocabulary": "^3.0.0"
 	},
 	"autoload": {
 		"classmap": [ "lib/" ]
