@@ -17,6 +17,6 @@ $hooks = Hooks::class . '::';
 
 return [
 
-	Icybee\Modules\Nodes\DeleteOperation::class . '::process' => $hooks . 'on_nodes_delete'
+	Icybee\Modules\Nodes\Operation\DeleteOperation::class . '::process' => $hooks . 'on_nodes_delete'
 
 ];

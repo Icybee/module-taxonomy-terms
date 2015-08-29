@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Modules\Taxonomy\Terms;
+namespace Icybee\Modules\Taxonomy\Terms\Operation;
 
-class DeleteOperation extends \ICanBoogie\DeleteOperation
+class SaveOperation extends \ICanBoogie\Module\Operation\SaveOperation
 {
 
 }

@@ -15,7 +15,7 @@ use ICanBoogie\ActiveRecord;
 use ICanBoogie\Exception;
 use ICanBoogie\Operation;
 
-use Icybee\Modules\Nodes\DeleteOperation;
+use Icybee\Modules\Nodes\Operation\DeleteOperation;
 
 class Hooks
 {
