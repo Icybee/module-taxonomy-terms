@@ -24,7 +24,14 @@ class EditBlock extends \Icybee\EditBlock
 {
 	protected function lazy_get_children()
 	{
+		$vid = $this->values['vid'];
+
 		$vid_options = [ null => '' ] + $this->app->models['taxonomy.vocabulary']->select('vid, vocabulary')->pairs;
+		$parent_options = [ null => '' ]
+			+ $this->app->models['taxonomy.terms']
+				->select('vtid, term')
+				->filter_by_vid($vid)
+				->pairs;
 
 		/*
 		 * Beware of the 'weight' property, because vocabulary also define 'weight' and will
@@ -37,6 +44,13 @@ class EditBlock extends \Icybee\EditBlock
 
 				Form::LABEL => 'Term',
 				Element::REQUIRED => true
+
+			]),
+
+			Term::PARENT_ID => new Element('select', [
+
+				Form::LABEL => 'Parent',
+				Element::OPTIONS => $parent_options
 
 			]),
 

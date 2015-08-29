@@ -37,6 +37,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	const VID = 'vid';
 	const TERM = 'term';
 	const TERMSLUG = 'termslug';
+	const PARENT_ID = 'parent_id';
 	const WEIGHT = 'weight';
 
 	/**
@@ -66,6 +67,13 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	 * @var string
 	 */
 	public $termslug;
+
+	/**
+	 * Parent term identifier.
+	 *
+	 * @var int
+	 */
+	public $parent_id;
 
 	/**
 	 * Weight of the term relative to other terms in the same vocabulary.

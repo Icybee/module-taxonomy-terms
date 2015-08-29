@@ -26,6 +26,7 @@ return [
 				'vid' => 'foreign',
 				'term' => 'varchar',
 				'termslug' => 'varchar',
+				'parent_id' => 'foreign',
 				'weight' => [ 'integer', 'unsigned' => true ]
 
 			]
