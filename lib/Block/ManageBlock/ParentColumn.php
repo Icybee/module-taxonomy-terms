@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Modules\Taxonomy\Terms\ManageBlock;
+namespace Icybee\Modules\Taxonomy\Terms\Block\ManageBlock;
 
-use Icybee\ManageBlock\Column;
-use Icybee\Modules\Taxonomy\Terms\ManageBlock;
+use Icybee\Block\ManageBlock\Column;
+use Icybee\Modules\Taxonomy\Terms\Block\ManageBlock;
 
 class ParentColumn extends Column
 {

@@ -9,18 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Modules\Taxonomy\Terms;
+namespace Icybee\Modules\Taxonomy\Terms\Block;
 
 use Brickrouge\Element;
 use Brickrouge\Form;
 use Brickrouge\Widget;
 
 use Icybee\Modules\Nodes\TitleSlugCombo;
+use Icybee\Modules\Taxonomy\Terms\Term;
 
 /**
  * @property Term $record
  */
-class EditBlock extends \Icybee\EditBlock
+class EditBlock extends \Icybee\Block\EditBlock
 {
 	protected function lazy_get_children()
 	{

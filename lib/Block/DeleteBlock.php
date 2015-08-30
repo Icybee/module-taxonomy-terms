@@ -9,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Modules\Taxonomy\Terms;
+namespace Icybee\Modules\Taxonomy\Terms\Block;
+
+use Icybee\Modules\Taxonomy\Terms\Term;
 
 /**
  * @property Term $record
  */
-class DeleteBlock extends \Icybee\DeleteBlock
+class DeleteBlock extends \Icybee\Block\DeleteBlock
 {
 	protected function get_record_name()
 	{
