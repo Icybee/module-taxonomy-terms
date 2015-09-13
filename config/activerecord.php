@@ -10,8 +10,8 @@ return [
 
 		'taxonomy.terms' => [
 
-			'vocabulary' => Vocabulary\VocabularyCriterion::class,
-			'scope' => Vocabulary\ScopeCriterion::class,
+			'vocabulary' => Vocabulary\Facets\VocabularyCriterion::class,
+			'scope' => Vocabulary\Facets\ScopeCriterion::class,
 			'term' => TermCriterion::class,
 			'usage' => UsageCriterion::class
 
