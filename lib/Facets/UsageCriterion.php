@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Icybee\Modules\Taxonomy\Terms;
+namespace Icybee\Modules\Taxonomy\Terms\Facets;
 
 use ICanBoogie\Facets\Criterion;
 use ICanBoogie\ActiveRecord\Query;

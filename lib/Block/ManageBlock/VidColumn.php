@@ -4,6 +4,8 @@ namespace Icybee\Modules\Taxonomy\Terms\Block\ManageBlock;
 
 use ICanBoogie\ActiveRecord\Query;
 use Icybee\Block\ManageBlock\Column;
+use Icybee\Block\ManageBlock\CriterionColumn;
+use Icybee\Block\ManageBlock\CriterionColumnTrait;
 use Icybee\Block\ManageBlock\FilterDecorator;
 use Icybee\Modules\Taxonomy\Terms\Block\ManageBlock;
 use Icybee\Modules\Taxonomy\Terms\Term;
@@ -11,16 +13,18 @@ use Icybee\Modules\Taxonomy\Terms\Term;
 /**
  * Representation of the `vid` column.
  */
-class VidColumn extends Column
+class VidColumn extends Column implements CriterionColumn
 {
+	use CriterionColumnTrait;
+
 	public function __construct(ManageBlock $manager, $id, array $options = [])
 	{
 		parent::__construct($manager, $id, $options + [
 
-				'title' => 'Vocabulary',
-				'orderable' => true
+			'title' => 'Vocabulary',
+			'orderable' => true
 
-			]);
+		]);
 	}
 
 	/**
@@ -49,33 +53,6 @@ class VidColumn extends Column
 	}
 
 	/**
-	 * Alters the query with the 'vid' filter.
-	 *
-	 * @inheritdoc
-	 */
-	public function alter_query_with_filter(Query $query, $filter_value)
-	{
-		if ($filter_value)
-		{
-			$query->filter_by_vid($filter_value);
-		}
-
-		return $query;
-	}
-
-	/**
-	 * Orders the records according to vocabulary name.
-	 *
-	 * @inheritdoc
-	 */
-	public function alter_query_with_order(Query $query, $order_direction)
-	{
-		$names = $this->app->models['taxonomy.vocabulary']->select('vid, vocabulary')->order("vocabulary " . ($order_direction < 0 ? 'DESC' : 'ASC'))->pairs;
-
-		return $query->order('vid', array_keys($names));
-	}
-
-	/**
 	 * @param Term $record
 	 *
 	 * @inheritdoc
@@ -85,4 +62,3 @@ class VidColumn extends Column
 		return new FilterDecorator($record, $this->id, $this->manager->is_filtering($this->id), $record->vocabulary);
 	}
 }
-
