@@ -30,7 +30,7 @@ class EditBlock extends \Icybee\Block\EditBlock
 		$vid_options = [ null => '' ] + $this->app->models['taxonomy.vocabulary']->select('vid, vocabulary')->pairs;
 		$parent_options = [ null => '' ]
 			+ $this->app->models['taxonomy.terms']
-				->select('vtid, term')
+				->select('term_id, term')
 				->filter_by_vid($vid)
 				->pairs;
 

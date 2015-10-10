@@ -33,7 +33,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 
 	const MODEL_ID = 'taxonomy.terms';
 
-	const VTID = 'vtid';
+	const TERM_ID = 'term_id';
 	const VID = 'vid';
 	const TERM = 'term';
 	const TERMSLUG = 'termslug';
@@ -45,7 +45,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	 *
 	 * @var int
 	 */
-	public $vtid;
+	public $term_id;
 
 	/**
 	 * Identifier of the vocabulary the term belongs to.
@@ -117,7 +117,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 			: null;
 	}
 
-	static private $nodes_keys_by_vid_and_vtid = [];
+	static private $nodes_keys_by_vocabulary_and_term = [];
 
 	/**
 	 * Returns the nodes keys associated with the term.
@@ -131,10 +131,10 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	{
 		$vid = $this->vid;
 
-		if (!isset(self::$nodes_keys_by_vid_and_vtid[$vid]))
+		if (!isset(self::$nodes_keys_by_vocabulary_and_term[$vid]))
 		{
 			$groups = $this->model->models['taxonomy.terms/nodes']
-			->select('vtid, nid')
+			->select('term_id, nid')
 			->filter_by_vid($this->vid)
 			->order('term_node.weight')
 			->all(\PDO::FETCH_COLUMN | \PDO::FETCH_GROUP);
@@ -148,17 +148,17 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 
 			unset($keys);
 
-			self::$nodes_keys_by_vid_and_vtid[$vid] = $groups;
+			self::$nodes_keys_by_vocabulary_and_term[$vid] = $groups;
 		}
 
-		$vtid = $this->vtid;
+		$term_id = $this->term_id;
 
-		if (!isset(self::$nodes_keys_by_vid_and_vtid[$vid][$vtid]))
+		if (!isset(self::$nodes_keys_by_vocabulary_and_term[$vid][$term_id]))
 		{
 			return array();
 		}
 
-		return self::$nodes_keys_by_vid_and_vtid[$vid][$vtid];
+		return self::$nodes_keys_by_vocabulary_and_term[$vid][$term_id];
 	}
 
 	/**
@@ -170,9 +170,9 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	{
 		$ids = $this->model
 		->select('nid')
-		->join('INNER JOIN {prefix}taxonomy_terms__nodes ttnode USING(vtid)') // FIXME-20110614 Query should be cleverer then that
+		->join('INNER JOIN {prefix}taxonomy_terms__nodes ttnode USING(term_id)') // FIXME-20110614 Query should be cleverer then that
 		->join(':nodes')
-		->filter_by_vtid($this->vtid)
+		->filter_by_vtid($this->term_id)
 		->where('is_online = 1')
 		->order('ttnode.weight')
 		->all(\PDO::FETCH_COLUMN);
@@ -225,7 +225,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 		return [
 
 			'type' => 'term',
-			'id' => 'term-' . $this->vtid,
+			'id' => 'term-' . $this->term_id,
 			'slug' => 'term-slug--' . $this->termslug,
 			'vid' => $this->vid ? 'vocabulary-' . $this->vid : null,
 			'vslug' => $vocabulary_slug ? "vocabulary-slug--{$vocabulary_slug}" : null

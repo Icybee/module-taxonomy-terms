@@ -35,10 +35,10 @@ class PopularityColumn extends Column
 	{
 		$term_node_count = $query
 			->model->models['taxonomy.terms/nodes']
-			->select('vtid, COUNT(nid) AS term_node_count')
-			->group('vtid');
+			->select('term_id, COUNT(nid) AS term_node_count')
+			->group('term_id');
 
-		return $query->join($term_node_count, [ 'mode' => 'LEFT', 'on' => 'vtid' ]);
+		return $query->join($term_node_count, [ 'mode' => 'LEFT', 'on' => 'term_id' ]);
 	}
 
 	/**

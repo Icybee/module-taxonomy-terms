@@ -22,7 +22,7 @@ return [
 
 			Model::SCHEMA => [
 
-				'vtid' => 'serial',
+				'term_id' => 'serial',
 				'vid' => 'foreign',
 				'term' => 'varchar',
 				'termslug' => 'varchar',
@@ -45,7 +45,7 @@ return [
 
 			Model::SCHEMA => [
 
-				'vtid' => [ 'foreign', 'primary' => true ],
+				'term_id' => [ 'foreign', 'primary' => true ],
 				'nid' => [ 'foreign', 'primary' => true ],
 				'weight' => [ 'integer', 'unsigned' => true ]
 

@@ -22,9 +22,9 @@ class UsageCriterion extends Criterion
 		->model
 		->join(':taxonomy.terms/nodes')
 		->join(':nodes')
-		->select('vtid, COUNT(nid) as `usage`')
+		->select('term_id, COUNT(nid) as `usage`')
 		->where('is_online = 1')
-		->group('vtid');
+		->group('term_id');
 
 		return $query
 		->join($usage_query, [ 'as' => 'term_usage' ])

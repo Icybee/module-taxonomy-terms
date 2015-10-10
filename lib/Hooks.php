@@ -73,7 +73,7 @@ class Hooks
 
 		$conditions[] = '(SELECT GROUP_CONCAT(nid) FROM {prefix}taxonomy_terms__nodes tnode
 			INNER JOIN {prefix}nodes node USING(nid)
-			WHERE is_online = 1 AND tnode.vtid = term.vtid) IS NOT NULL';
+			WHERE is_online = 1 AND tnode.term_id = term.term_id) IS NOT NULL';
 
 
 		$where = $conditions ? ' WHERE ' . implode(' AND ', $conditions) : null;
@@ -88,7 +88,7 @@ class Hooks
 
 			(SELECT GROUP_CONCAT(nid) FROM {prefix}taxonomy_terms__nodes tnode
 			INNER JOIN {prefix}nodes node USING(nid)
-			WHERE is_online = 1 AND tnode.vtid = term.vtid
+			WHERE is_online = 1 AND tnode.term_id = term.term_id
 			ORDER BY tnode.weight) AS nodes_ids
 
 			FROM {prefix}taxonomy_vocabulary voc' . $inner . $where . ' ORDER BY term.weight, term',
@@ -169,7 +169,7 @@ class Hooks
 				'SELECT nid FROM {prefix}taxonomy_vocabulary voc
 				INNER JOIN {prefix}taxonomy_vocabulary__scopes scopes USING(vid)
 				INNER JOIN {prefix}taxonomy_terms term USING(vid)
-				INNER JOIN {prefix}taxonomy_terms__nodes tnode USING(vtid)
+				INNER JOIN {prefix}taxonomy_terms__nodes tnode USING(term_id)
 				WHERE constructor = ? AND term.termslug = ?', [
 
 					$constructor, $term
