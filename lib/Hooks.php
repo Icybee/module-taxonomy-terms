@@ -65,7 +65,7 @@ class Hooks
 			}
 			else
 			{
-				$conditions[] = '(vocabulary = ? OR vocabularyslug = ?)';
+				$conditions[] = '(vocabulary = ? OR vocabulary_slug = ?)';
 				$conditions_args[] = $vocabulary;
 				$conditions_args[] = $vocabulary;
 			}
@@ -141,7 +141,7 @@ class Hooks
 
 			$entries = $app->models[$constructor]->where('is_online = 1 AND nid IN(' . $term->nodes_keys . ')')->order($order)->all;
 
-			$taxonomy_property = $term->vocabularyslug;
+			$taxonomy_property = $term->vocabulary_slug;
 			$taxonomy_property_slug = $taxonomy_property . 'slug';
 
 			foreach ($entries as $entry)
@@ -159,7 +159,7 @@ class Hooks
 			$vocabulary = $app->models['taxonomy.vocabulary']
 			->join('INNER JOIN {self}__scopes USING(vocabulary_id)')
 			->join('INNER JOIN {prefix}taxonomy_terms USING(vocabulary_id)')
-			->where('vocabularyslug = ? AND constructor = ? AND term_slug = ?', $vocabulary, $constructor, $term)
+			->where('vocabulary_slug = ? AND constructor = ? AND term_slug = ?', $vocabulary, $constructor, $term)
 			->one;
 
 			$patron->context['self']['vocabulary'] = $vocabulary;

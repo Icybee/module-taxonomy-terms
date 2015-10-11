@@ -213,13 +213,13 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	{
 		$vocabulary_slug = '';
 
-		if (isset($this->vocabularyslug))
+		if (isset($this->vocabulary_slug))
 		{
-			$vocabulary_slug = $this->vocabularyslug;
+			$vocabulary_slug = $this->vocabulary_slug;
 		}
 		else if ($this->vocabulary_id && $this->vocabulary)
 		{
-			$vocabulary_slug = $this->vocabulary->vocabularyslug;
+			$vocabulary_slug = $this->vocabulary->vocabulary_slug;
 		}
 
 		return [
