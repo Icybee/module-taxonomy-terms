@@ -36,7 +36,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	const TERM_ID = 'term_id';
 	const VID = 'vid';
 	const TERM = 'term';
-	const TERMSLUG = 'termslug';
+	const TERMSLUG = 'term_slug';
 	const PARENT_ID = 'parent_id';
 	const WEIGHT = 'weight';
 
@@ -66,7 +66,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	 *
 	 * @var string
 	 */
-	public $termslug;
+	public $term_slug;
 
 	/**
 	 * Parent term identifier.
@@ -102,7 +102,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 
 	public function to_slug()
 	{
-		return $this->termslug;
+		return $this->term_slug;
 	}
 
 	/**
@@ -226,7 +226,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 
 			'type' => 'term',
 			'id' => 'term-' . $this->term_id,
-			'slug' => 'term-slug--' . $this->termslug,
+			'slug' => 'term-slug--' . $this->term_slug,
 			'vid' => $this->vid ? 'vocabulary-' . $this->vid : null,
 			'vslug' => $vocabulary_slug ? "vocabulary-slug--{$vocabulary_slug}" : null
 

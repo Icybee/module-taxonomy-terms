@@ -21,27 +21,10 @@ class TermCriterion extends Criterion
 {
 	public function alter_query_with_value(Query $query, $value)
 	{
-		$vocabulary_slug = $this->id;
-		$constructor = $query->model->id;
+		return $query->and([
 
-		if (substr($vocabulary_slug, -4, 4) === 'slug')
-		{
-			$vocabulary_slug = substr($vocabulary_slug, 0, -4);
-		}
+			is_numeric($value) ? 'term_id' : 'term_slug' => $value
 
-		$taxonomy_query = $query->model->models['taxonomy.vocabulary']
-			->join(':taxonomy.vocabulary/scopes')
-			->join(':taxonomy.terms')
-			->join(':taxonomy.terms/nodes')
-			->select('nid')
-			->and([
-
-				'termslug' => $value,
-				'vocabularyslug' => $vocabulary_slug,
-				'constructor' => $constructor
-
-			]);
-
-		return $query->filter_by_nid($taxonomy_query);
+		]);
 	}
 }

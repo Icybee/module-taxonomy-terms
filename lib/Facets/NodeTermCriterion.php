@@ -41,7 +41,7 @@ class NodeTermCriterion extends Criterion
 		$t_alias = $token . '_t';
 
 		$q = $query->model->models['taxonomy.vocabulary']
-		->select("nid, vocabularyslug AS $v_alias, termslug AS $t_alias")
+		->select("nid, vocabularyslug AS $v_alias, term_slug AS $t_alias")
 		->join(':taxonomy.terms')
 		->join(':taxonomy.terms/nodes');
 

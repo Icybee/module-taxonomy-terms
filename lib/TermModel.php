@@ -16,7 +16,7 @@ use ICanBoogie\ActiveRecord\Model;
 class TermModel extends Model
 {
 	/**
-	 * If the `termslug` property is empty it is created from the `term` property, otherwise
+	 * If the `term_slug` property is empty it is created from the `term` property, otherwise
 	 * the it is normalized.
 	 *
 	 * @inheritdoc

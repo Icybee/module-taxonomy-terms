@@ -25,7 +25,7 @@ return [
 				'term_id' => 'serial',
 				'vid' => 'foreign',
 				'term' => 'varchar',
-				'termslug' => 'varchar',
+				'term_slug' => 'varchar',
 				'parent_id' => 'foreign',
 				'weight' => [ 'integer', 'unsigned' => true ]
 

@@ -147,7 +147,7 @@ class Hooks
 			foreach ($entries as $entry)
 			{
 				$entry->$taxonomy_property = $term;
-				$entry->$taxonomy_property_slug = $term->termslug;
+				$entry->$taxonomy_property_slug = $term->term_slug;
 			}
 		}
 		else
@@ -159,7 +159,7 @@ class Hooks
 			$vocabulary = $app->models['taxonomy.vocabulary']
 			->join('INNER JOIN {self}__scopes USING(vid)')
 			->join('INNER JOIN {prefix}taxonomy_terms USING(vid)')
-			->where('vocabularyslug = ? AND constructor = ? AND termslug = ?', $vocabulary, $constructor, $term)
+			->where('vocabularyslug = ? AND constructor = ? AND term_slug = ?', $vocabulary, $constructor, $term)
 			->one;
 
 			$patron->context['self']['vocabulary'] = $vocabulary;
@@ -170,7 +170,7 @@ class Hooks
 				INNER JOIN {prefix}taxonomy_vocabulary__scopes scopes USING(vid)
 				INNER JOIN {prefix}taxonomy_terms term USING(vid)
 				INNER JOIN {prefix}taxonomy_terms__nodes tnode USING(term_id)
-				WHERE constructor = ? AND term.termslug = ?', [
+				WHERE constructor = ? AND term.term_slug = ?', [
 
 					$constructor, $term
 
