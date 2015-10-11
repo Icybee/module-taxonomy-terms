@@ -23,13 +23,13 @@ class TermModel extends Model
 	 */
 	public function save(array $properties, $key = null, array $options = [])
 	{
-		if (isset($properties[Term::TERM]) && empty($properties[Term::TERMSLUG]))
+		if (isset($properties[Term::TERM]) && empty($properties[Term::TERM_SLUG]))
 		{
-			$properties[Term::TERMSLUG] = \Icybee\slugize($properties[Term::TERM]);
+			$properties[Term::TERM_SLUG] = \Icybee\slugize($properties[Term::TERM]);
 		}
-		else if (isset($properties[Term::TERMSLUG]))
+		else if (isset($properties[Term::TERM_SLUG]))
 		{
-			$properties[Term::TERMSLUG] = \ICanBoogie\normalize($properties[Term::TERMSLUG]);
+			$properties[Term::TERM_SLUG] = \ICanBoogie\normalize($properties[Term::TERM_SLUG]);
 		}
 
 		return parent::save($properties, $key, $options);

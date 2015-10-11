@@ -11,7 +11,7 @@ return [
 		'taxonomy.terms' => [
 
 			'vocabulary' => Vocabulary\Facets\VocabularyCriterion::class,
-			'vid' => VidCriterion::class,
+			'vocabulary_id' => VocabularyCriterion::class,
 			'scope' => Vocabulary\Facets\ScopeCriterion::class,
 			'term' => TermCriterion::class,
 			'usage' => UsageCriterion::class

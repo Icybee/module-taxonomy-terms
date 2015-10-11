@@ -11,7 +11,7 @@ use Icybee\Modules\Taxonomy\Terms\Block\ManageBlock;
 use Icybee\Modules\Taxonomy\Terms\Term;
 
 /**
- * Representation of the `vid` column.
+ * Representation of the `vocabulary_id` column.
  */
 class VidColumn extends Column implements CriterionColumn
 {
@@ -28,13 +28,13 @@ class VidColumn extends Column implements CriterionColumn
 	}
 
 	/**
-	 * Extends the "vid" column by providing vocabulary filters.
+	 * Extends the "vocabulary_id" column by providing vocabulary filters.
 	 */
 	protected function get_options()
 	{
 		// Move this to render_header() when it's actually used
 
-		$keys = $this->manager->module->model->select('DISTINCT vid')->all(\PDO::FETCH_COLUMN);
+		$keys = $this->manager->module->model->select('DISTINCT vocabulary_id')->all(\PDO::FETCH_COLUMN);
 
 		if (count($keys) < 2)
 		{
@@ -46,8 +46,8 @@ class VidColumn extends Column implements CriterionColumn
 		// /
 
 		return $this->app->models['taxonomy.vocabulary']
-			->select('CONCAT("?vid=", vid), vocabulary')
-			->where([ 'vid' => $keys ])
+			->select('CONCAT("?vocabulary_id=", vocabulary_id), vocabulary')
+			->where([ 'vocabulary_id' => $keys ])
 			->order('vocabulary')
 			->pairs;
 	}

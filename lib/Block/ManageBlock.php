@@ -28,7 +28,7 @@ class ManageBlock extends \Icybee\Block\ManageBlock
 	 * Adds the following columns:
 	 *
 	 * - `term`: An instance of {@link TermColumn}.
-	 * - `vid`: An instance of {@link VidColumn}.
+	 * - `vocabulary_id`: An instance of {@link VidColumn}.
 	 * - `popularity`: An instance of {@link PopularityColumn}.
 	 *
 	 * @inheritdoc
@@ -38,7 +38,7 @@ class ManageBlock extends \Icybee\Block\ManageBlock
 		return array_merge(parent::get_available_columns(), [
 
 			'term' => ManageBlock\TermColumn::class,
-			'vid' => ManageBlock\VidColumn::class,
+			'vocabulary_id' => ManageBlock\VidColumn::class,
 			'popularity' => ManageBlock\PopularityColumn::class
 
 		]);

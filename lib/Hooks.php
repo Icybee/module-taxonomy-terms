@@ -42,13 +42,13 @@ class Hooks
 		$conditions = [];
 		$conditions_args = [];
 
-		$inner = ' INNER JOIN {prefix}taxonomy_terms term USING(vid)';
+		$inner = ' INNER JOIN {prefix}taxonomy_terms term USING(vocabulary_id)';
 
 		$constructor = $args['constructor'];
 
 		if ($constructor)
 		{
-			$inner .= ' INNER JOIN {prefix}taxonomy_vocabulary__scopes USING(vid)';
+			$inner .= ' INNER JOIN {prefix}taxonomy_vocabulary__scopes USING(vocabulary_id)';
 
 			$conditions[] = 'constructor = ?';
 			$conditions_args[] = $constructor;
@@ -60,7 +60,7 @@ class Hooks
 		{
 			if (is_numeric($vocabulary))
 			{
-				$conditions[] = 'vid = ?';
+				$conditions[] = 'vocabulary_id = ?';
 				$conditions_args[] = $vocabulary;
 			}
 			else
@@ -157,8 +157,8 @@ class Hooks
 			$constructor = $args['constructor'];
 
 			$vocabulary = $app->models['taxonomy.vocabulary']
-			->join('INNER JOIN {self}__scopes USING(vid)')
-			->join('INNER JOIN {prefix}taxonomy_terms USING(vid)')
+			->join('INNER JOIN {self}__scopes USING(vocabulary_id)')
+			->join('INNER JOIN {prefix}taxonomy_terms USING(vocabulary_id)')
 			->where('vocabularyslug = ? AND constructor = ? AND term_slug = ?', $vocabulary, $constructor, $term)
 			->one;
 
@@ -167,8 +167,8 @@ class Hooks
 			$ids = $app->db->query
 			(
 				'SELECT nid FROM {prefix}taxonomy_vocabulary voc
-				INNER JOIN {prefix}taxonomy_vocabulary__scopes scopes USING(vid)
-				INNER JOIN {prefix}taxonomy_terms term USING(vid)
+				INNER JOIN {prefix}taxonomy_vocabulary__scopes scopes USING(vocabulary_id)
+				INNER JOIN {prefix}taxonomy_terms term USING(vocabulary_id)
 				INNER JOIN {prefix}taxonomy_terms__nodes tnode USING(term_id)
 				WHERE constructor = ? AND term.term_slug = ?', [
 

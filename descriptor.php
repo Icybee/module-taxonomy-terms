@@ -23,10 +23,10 @@ return [
 			Model::SCHEMA => [
 
 				'term_id' => 'serial',
-				'vid' => 'foreign',
 				'term' => 'varchar',
 				'term_slug' => 'varchar',
 				'parent_id' => 'foreign',
+				'vocabulary_id' => 'foreign',
 				'weight' => [ 'integer', 'unsigned' => true ]
 
 			]

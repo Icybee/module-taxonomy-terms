@@ -25,13 +25,16 @@ class EditBlock extends \Icybee\Block\EditBlock
 {
 	protected function lazy_get_children()
 	{
-		$vid = $this->values['vid'];
+		$vid = $this->values['vocabulary_id'];
 
-		$vid_options = [ null => '' ] + $this->app->models['taxonomy.vocabulary']->select('vid, vocabulary')->pairs;
+		$vid_options = [ null => '' ] + $this->app->models['taxonomy.vocabulary']
+				->select('vocabulary_id, vocabulary')
+				->pairs;
+
 		$parent_options = [ null => '' ]
 			+ $this->app->models['taxonomy.terms']
 				->select('term_id, term')
-				->filter_by_vid($vid)
+				->filter_by_vocabulary_id($vid)
 				->pairs;
 
 		/*
@@ -55,7 +58,7 @@ class EditBlock extends \Icybee\Block\EditBlock
 
 			]),
 
-			Term::VID => new Element('select', [
+			Term::VOCABULARY_ID => new Element('select', [
 
 				Form::LABEL => 'Vocabulary',
 				Element::OPTIONS => $vid_options,

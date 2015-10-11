@@ -34,10 +34,10 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	const MODEL_ID = 'taxonomy.terms';
 
 	const TERM_ID = 'term_id';
-	const VID = 'vid';
 	const TERM = 'term';
-	const TERMSLUG = 'term_slug';
+	const TERM_SLUG = 'term_slug';
 	const PARENT_ID = 'parent_id';
+	const VOCABULARY_ID = 'vocabulary_id';
 	const WEIGHT = 'weight';
 
 	/**
@@ -52,7 +52,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	 *
 	 * @var int
 	 */
-	public $vid;
+	public $vocabulary_id;
 
 	/**
 	 * Name of the term.
@@ -112,8 +112,8 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	 */
 	protected function lazy_get_vocabulary()
 	{
-		return $this->vid
-			? $this->model->models['taxonomy.vocabulary'][$this->vid]
+		return $this->vocabulary_id
+			? $this->model->models['taxonomy.vocabulary'][$this->vocabulary_id]
 			: null;
 	}
 
@@ -129,13 +129,13 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 	 */
 	protected function lazy_get_nodes_keys()
 	{
-		$vid = $this->vid;
+		$vid = $this->vocabulary_id;
 
 		if (!isset(self::$nodes_keys_by_vocabulary_and_term[$vid]))
 		{
 			$groups = $this->model->models['taxonomy.terms/nodes']
 			->select('term_id, nid')
-			->filter_by_vid($this->vid)
+			->filter_by_vocabulary_id($this->vocabulary_id)
 			->order('term_node.weight')
 			->all(\PDO::FETCH_COLUMN | \PDO::FETCH_GROUP);
 
@@ -217,7 +217,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 		{
 			$vocabulary_slug = $this->vocabularyslug;
 		}
-		else if ($this->vid && $this->vocabulary)
+		else if ($this->vocabulary_id && $this->vocabulary)
 		{
 			$vocabulary_slug = $this->vocabulary->vocabularyslug;
 		}
@@ -227,7 +227,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 			'type' => 'term',
 			'id' => 'term-' . $this->term_id,
 			'slug' => 'term-slug--' . $this->term_slug,
-			'vid' => $this->vid ? 'vocabulary-' . $this->vid : null,
+			'vocabulary_id' => $this->vocabulary_id ? 'vocabulary-' . $this->vocabulary_id : null,
 			'vslug' => $vocabulary_slug ? "vocabulary-slug--{$vocabulary_slug}" : null
 
 		];

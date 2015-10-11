@@ -5,7 +5,7 @@ return [
 	'taxonomy_terms.manage.column' => [
 
 		'term' => 'Term',
-		'vid' => 'Vocabulary',
+		'vocabulary_id' => 'Vocabulary',
 		'popularity' => 'Popularity'
 
 	]
