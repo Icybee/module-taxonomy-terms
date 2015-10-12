@@ -172,7 +172,7 @@ class Term extends ActiveRecord implements \IteratorAggregate, CSSClassNames, To
 		->select('nid')
 		->join('INNER JOIN {prefix}taxonomy_terms__nodes ttnode USING(term_id)') // FIXME-20110614 Query should be cleverer then that
 		->join(':nodes')
-		->filter_by_vtid($this->term_id)
+		->filter_by_term_id($this->term_id)
 		->where('is_online = 1')
 		->order('ttnode.weight')
 		->all(\PDO::FETCH_COLUMN);

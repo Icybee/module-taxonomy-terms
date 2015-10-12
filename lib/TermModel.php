@@ -34,4 +34,40 @@ class TermModel extends Model
 
 		return parent::save($properties, $key, $options);
 	}
+
+	/**
+	 * @param Term[] $records
+	 * @param callable $alter_query
+	 */
+	public function including_usage($records, callable $alter_query = null)
+	{
+		$ids = [];
+
+		foreach ($records as $record)
+		{
+			$ids[$record->term_id] = $record;
+			$record->usage = null;
+		}
+
+		if (!$ids)
+		{
+			return;
+		}
+
+		$query = $this
+			->select('term_id, COUNT(nid)')
+			->group('term_id')
+			->join(':taxonomy.terms/nodes')
+			->filter_by_term_id(array_keys($ids));
+
+		if ($alter_query)
+		{
+			$alter_query($query);
+		}
+
+		foreach ($query->pairs as $term_id => $usage)
+		{
+			$ids[$term_id]->usage = $usage;
+		}
+	}
 }

@@ -17,6 +17,9 @@ use ICanBoogie\Operation;
 
 use Icybee\Modules\Nodes\Operation\DeleteOperation;
 
+use Icybee\Modules\Taxonomy\Vocabulary\Element\CloudElement;
+use Patron\Engine as Patron;
+
 class Hooks
 {
 	/**
@@ -30,7 +33,7 @@ class Hooks
 		\ICanBoogie\app()->models['taxonomy.terms/nodes']->filter_by_nid($event->rc)->delete();
 	}
 
-	static public function markup_terms(array $args, \Patron\Engine $patron, $template)
+	static public function markup_terms(array $args, Patron $patron, $template)
 	{
 		if (isset($args['scope']))
 		{
@@ -127,7 +130,7 @@ class Hooks
 	second temps. Notamment les options d'ordre.
 
 	*/
-	static public function markup_nodes(array $args, \Patron\Engine $patron, $template)
+	static public function markup_nodes(array $args, Patron $patron, $template)
 	{
 		$app = \ICanBoogie\app();
 
@@ -203,5 +206,40 @@ class Hooks
 		}
 
 		return $patron($template, $entries);
+	}
+
+	static public function markup_cloud($args, Patron $patron, $template)
+	{
+		/* @var $model TermModel */
+
+		$terms = $args['select'];
+		$model = \ICanBoogie\app()->models['taxonomy.terms'];
+
+		$model->including_usage($terms, function(ActiveRecord\Query $query) {
+
+			$query
+				->join(':nodes')
+				->filter_by_is_online(true);
+
+		});
+
+		$options = [];
+
+		foreach ($terms as $term)
+		{
+			$name = <<<EOT
+<a href="?{$term->vocabulary_slug}={$term->term_id}">{$term}</a>
+EOT;
+
+			$options[$name] = $term->usage;
+		}
+
+		return new CloudElement('ul', [
+
+			CloudElement::OPTIONS => $options,
+
+			'class' => 'taxonomy-cloud'
+
+		]);
 	}
 }

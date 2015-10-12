@@ -40,6 +40,16 @@ return [
 				'limit' => null
 
 			]
+		],
+
+		'taxonomy:cloud' => [
+
+			$hooks . 'markup_cloud', [
+
+				'select' => [ 'expression' => true, 'default' => 'this' ]
+
+			]
+
 		]
 	]
 ];

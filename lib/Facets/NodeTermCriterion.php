@@ -17,31 +17,13 @@ use ICanBoogie\ActiveRecord;
 
 class NodeTermCriterion extends Criterion
 {
-	static private $tokens = [];
-
-	static protected function generate_token()
-	{
-		$possible = \ICanboogie\TOKEN_ALPHA;
-
-		for (;;)
-		{
-			$token = \ICanBoogie\generate_token(6, $possible);
-
-			if (empty(self::$tokens[$token]))
-			{
-				return self::$tokens[$token] = $token;
-			}
-		}
-	}
-
 	public function alter_query_with_value(Query $query, $value)
 	{
-		$token = self::generate_token();
-		$v_alias = $token . '_v';
-		$t_alias = $token . '_t';
+		$v_alias = 'vocabulary' . uniqid();
+		$t_alias = 'term' . uniqid();
 
 		$q = $query->model->models['taxonomy.vocabulary']
-		->select("nid, vocabulary_slug AS $v_alias, term_slug AS $t_alias")
+		->select("nid, vocabulary_slug AS $v_alias, term_id AS $t_alias")
 		->join(':taxonomy.terms')
 		->join(':taxonomy.terms/nodes');
 
