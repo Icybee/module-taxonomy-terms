@@ -12,25 +12,50 @@
 namespace Icybee\Modules\Taxonomy\Terms\Facets;
 
 use ICanBoogie\Facets\Criterion;
-use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord;
+use ICanBoogie\ActiveRecord\Query;
+use ICanBoogie\ActiveRecord\ModelCollection;
+use Icybee\Modules\Taxonomy\Terms\Term;
+use Icybee\Modules\Taxonomy\Vocabulary\Vocabulary;
 
 class NodeTermCriterion extends Criterion
 {
+	/**
+	 * Alters the query by joining `taxonomy.terms/nodes` and filtering on the resolved term
+	 * identifier.
+	 *
+	 * @inheritdoc
+	 */
 	public function alter_query_with_value(Query $query, $value)
 	{
-		$v_alias = 'vocabulary' . uniqid();
-		$t_alias = 'term' . uniqid();
-
-		$q = $query->model->models['taxonomy.vocabulary']
-		->select("nid, vocabulary_slug AS $v_alias, term_id AS $t_alias")
-		->join(':taxonomy.terms')
-		->join(':taxonomy.terms/nodes');
+		$alias = 'term_node_' . uniqid();
+		$models = $query->model->models;
+		$term_id = is_numeric($value)
+			? $value
+			: $this->resolve_term_id($this->id, $value, $models);
 
 		$query
-		->join($q, [ 'on' => 'nid' ])
-		->where([ $v_alias => $this->id, $t_alias => $value]);
+		->join(':taxonomy.terms/nodes', [ 'on' => 'nid', 'as' => $alias ])
+		->where("$alias.term_id = ?", $term_id);
 
 		return $query;
+	}
+
+	/**
+	 * Resolves term identifier from slug.
+	 *
+	 * @param string $vocabulary_slug
+	 * @param string $term_slug
+	 * @param ModelCollection $models
+	 *
+	 * @return int Term identifier.
+	 */
+	private function resolve_term_id($vocabulary_slug, $term_slug, ModelCollection $models)
+	{
+		return $models['taxonomy.vocabulary']
+		->join(':taxonomy.terms')
+		->select("term_id")
+		->where([ Vocabulary::VOCABULARY_SLUG => $vocabulary_slug, Term::TERM_SLUG => $term_slug ])
+		->rc;
 	}
 }
