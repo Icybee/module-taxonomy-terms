@@ -3,9 +3,9 @@
 namespace Icybee\Modules\Taxonomy\Terms\Facets;
 
 use ICanBoogie\ActiveRecord\Query;
-use ICanBoogie\Facets\Criterion;
+use ICanBoogie\Facets\Criterion\BasicCriterion;
 
-class VocabularyCriterion extends Criterion
+class VocabularyCriterion extends BasicCriterion
 {
 	/**
 	 * Orders the records according to vocabulary name.

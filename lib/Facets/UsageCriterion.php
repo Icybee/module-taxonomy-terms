@@ -11,10 +11,10 @@
 
 namespace Icybee\Modules\Taxonomy\Terms\Facets;
 
-use ICanBoogie\Facets\Criterion;
+use ICanBoogie\Facets\Criterion\BasicCriterion;
 use ICanBoogie\ActiveRecord\Query;
 
-class UsageCriterion extends Criterion
+class UsageCriterion extends BasicCriterion
 {
 	public function alter_query_with_order(Query $query, $order_direction)
 	{

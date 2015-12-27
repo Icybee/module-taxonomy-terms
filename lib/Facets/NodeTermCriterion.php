@@ -11,14 +11,14 @@
 
 namespace Icybee\Modules\Taxonomy\Terms\Facets;
 
-use ICanBoogie\Facets\Criterion;
 use ICanBoogie\ActiveRecord;
 use ICanBoogie\ActiveRecord\Query;
 use ICanBoogie\ActiveRecord\ModelCollection;
+use ICanBoogie\Facets\Criterion\BasicCriterion;
 use Icybee\Modules\Taxonomy\Terms\Term;
 use Icybee\Modules\Taxonomy\Vocabulary\Vocabulary;
 
-class NodeTermCriterion extends Criterion
+class NodeTermCriterion extends BasicCriterion
 {
 	/**
 	 * Alters the query by joining `taxonomy.terms/nodes` and filtering on the resolved term

@@ -12,12 +12,12 @@
 namespace Icybee\Modules\Taxonomy\Terms\Facets;
 
 use ICanBoogie\ActiveRecord\Query;
-use ICanBoogie\Facets\Criterion;
+use ICanBoogie\Facets\Criterion\BasicCriterion;
 
 /**
  * A criterion for terms.
  */
-class TermCriterion extends Criterion
+class TermCriterion extends BasicCriterion
 {
 	public function alter_query_with_value(Query $query, $value)
 	{
