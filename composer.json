@@ -25,8 +25,8 @@
 	"prefer-stable": true,
 	"prefer-dist": true,
 	"require": {
-		"php": ">=5.5",
-		"icybee/module-taxonomy-vocabulary": "^3.0"
+		"php": ">=5.6",
+		"icybee/module-taxonomy-vocabulary": "^4.0"
 	},
 	"autoload": {
 		"classmap": [
