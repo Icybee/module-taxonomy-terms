@@ -2,26 +2,35 @@
 	"name": "icybee/module-taxonomy-terms",
 	"type": "icanboogie-module",
 	"description": "Taxonomy terms",
-	"keywords": [ "taxonomy", "terms" ],
+	"keywords": [
+		"icybee",
+		"module",
+		"taxonomy",
+		"terms"
+	],
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
 			"name": "Olivier Laviale",
 			"email": "olivier.laviale@gmail.com",
-			"homepage": "http://www.weirdog.com/",
-			"role" : "Developer"
+			"homepage": "https://olvlvl.com/",
+			"role": "Developer"
 		}
 	],
 	"support": {
-		"issues": "https://github.com/Icybee/module-taxonomy-vocabulary/issues",
-		"source": "https://github.com/Icybee/module-taxonomy-vocabulary"
+		"issues": "https://github.com/Icybee/module-taxonomy-terms/issues",
+		"source": "https://github.com/Icybee/module-taxonomy-terms"
 	},
 	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"prefer-dist": true,
 	"require": {
-		"php": ">=5.5.0",
-		"icybee/module-taxonomy-vocabulary": "^3.0.0"
+		"php": ">=5.5",
+		"icybee/module-taxonomy-vocabulary": "^3.0"
 	},
 	"autoload": {
-		"classmap": [ "lib/" ]
+		"classmap": [
+			"lib/"
+		]
 	}
 }
